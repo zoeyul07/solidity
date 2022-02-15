@@ -40,3 +40,37 @@ contract MyContract4{
     }
 
 }
+
+
+pragma solidity ^0.6.0;
+
+contract MyContract5{
+    uint256 public peopleCount;
+    mapping(uint => Person) public people;
+
+    //time is expressed in second in solidity
+    uint256 openingTime = 1642668800;
+
+    modifier onlyWhileOpen() {
+        //to get now, get current block timestamp
+        require(block.timestamp >= openingTime);   
+        _; 
+    }
+
+    struct Person {
+        uint _id;
+        string _firstName;
+        string _lastName;
+    }
+
+    //only call function if time has passed
+    function addPerson(string memory _firstName, string memory _lastName) public onlyWhileOpen {
+        increamentCount();
+        people[peopleCount] = Person(peopleCount, _firstName, _lastName);
+    }
+
+    function increamentCount() internal{
+        peopleCount += 1;
+    }
+
+}
